@@ -11,12 +11,16 @@ class Table extends Component {
             requiredItem: 0,
             product: [
                 {
+                    "godown": [{
+                        "godownName": "",
+                        "rackSection": "",
+                        "shelfNo": "",
+                        "qty": ""
+                    }],
                     "productName": "",
                     "size": "",
-                    "qty": "",
-                    "rackSection": "",
-                    "shelfNo": "",
-                    "godown": ""
+                    "totalQty": "",
+                    "price": ""
                 }
             ],
             editToggle: false
@@ -33,7 +37,7 @@ class Table extends Component {
     componentDidMount() {
         console.log('ComponentDidMount Method Executed'
         );
-       this.fetchData();
+        this.fetchData();
     }
 
     fetchData() {
@@ -51,10 +55,32 @@ class Table extends Component {
             return <tr key={i}>
                 <td>{product.productName}</td>
                 <td>{product.size}</td>
-                <td>{product.qty}</td>
-                <td>{product.godown}</td>
-                <td>{product.rackSection}</td>
-                <td>{product.shelfNo}</td>
+                <td>
+                    <div className="table-responsive table-bordered text-center border-dark">
+                        <table className="table table-striped table-bordered table-hover table-sm">
+                            <thead>
+                            <tr>
+                                <th>Godown Name</th>
+                                <th>Rack Section</th>
+                                <th>Shelf No</th>
+                                <th>Quantity</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {product.godown.map((godown, j) => {
+                                return <tr key={j}>
+                                    <td>  {godown.godownName} </td>
+                                    <td>  {godown.rackSection} </td>
+                                    <td> {godown.shelfNo}  </td>
+                                    <td>  {godown.qty} </td>
+                                </tr>
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+                <td>{product.totalQty}</td>
+                <td>{product.price}</td>
                 <td>
                     <button className="btn btn-warning btn-sm" type="button"
                             onClick={() => this.toggleEditModal(i)}><i
@@ -66,9 +92,9 @@ class Table extends Component {
             </tr>
         });
         const requiredItem = this.state.requiredItem;
-     const modalData = this.state.product[requiredItem];
-     console.log('inside html');
-     console.log(this.state.product);
+        const modalData = this.state.product[requiredItem];
+        console.log('inside html');
+        console.log(this.state.product);
         return (
             <div className="tab-pane active" role="tabpanel" id="tab-1">
                 <h3 className="text-center">Pipes</h3>
@@ -79,23 +105,21 @@ class Table extends Component {
                             <tr>
                                 <th>Product Name</th>
                                 <th>Size</th>
-                                <th>Quantity</th>
                                 <th>Godown</th>
-                                <th>Rack Section</th>
-                                <th>Shelf No</th>
+                                <th>Total Quantity</th>
+                                <th>Price</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {product}
                             <EditModal
-                                editToggle= {this.state.editToggle}
+                                editToggle={this.state.editToggle}
                                 productName={modalData.productName}
                                 size={modalData.size}
-                                qty={modalData.qty}
+                                totalQty={modalData.totalQty}
                                 godown={modalData.godown}
-                                rackSection={modalData.rackSection}
-                                shelfNo={modalData.shelfNo}
+                                price={modalData.price}
                             />
                             </tbody>
                         </table>
